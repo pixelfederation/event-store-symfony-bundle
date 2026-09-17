@@ -2,8 +2,8 @@
 
 /**
  * This file is part of prooph/event-store-symfony-bundle.
- * (c) 2014-2024 Alexander Miertsch <kontakt@codeliner.ws>
- * (c) 2015-2024 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2014-2026 Alexander Miertsch <kontakt@codeliner.ws>
+ * (c) 2015-2026 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\Bundle\EventStore\DependencyInjection\Compiler\PluginsPass;
 use ProophTest\Bundle\EventStore\DependencyInjection\Fixture\Plugin\BlackHole;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,7 +26,7 @@ class PluginsPassTest extends CompilerPassTestCase
         $container->addCompilerPass(new PluginsPass());
     }
 
-    /** @test */
+    #[Test]
     public function it_registers_plugins()
     {
         $this->registerEventStore('foo');

@@ -2,8 +2,8 @@
 
 /**
  * This file is part of prooph/event-store-symfony-bundle.
- * (c) 2014-2024 Alexander Miertsch <kontakt@codeliner.ws>
- * (c) 2015-2024 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2014-2026 Alexander Miertsch <kontakt@codeliner.ws>
+ * (c) 2015-2026 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\Bundle\EventStore\DependencyInjection\Compiler\RegisterProjectionsPass;
 use Prooph\Bundle\EventStore\DependencyInjection\ProophEventStoreExtension;
 use Prooph\Bundle\EventStore\Exception\RuntimeException;
@@ -44,7 +45,7 @@ class RegisterProjectionsPassTest extends CompilerPassTestCase
         $this->registerEmptyServiceLocator('prooph_event_store.projections_locator');
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_allow_inappropriate_classes(): void
     {
         $this->registerProjectionManager('foo');
@@ -64,7 +65,7 @@ class RegisterProjectionsPassTest extends CompilerPassTestCase
         $this->compile();
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_allow_read_model_projections_without_a_read_model(): void
     {
         $this->registerProjectionManager('foo');
@@ -80,7 +81,7 @@ class RegisterProjectionsPassTest extends CompilerPassTestCase
         $this->compile();
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_allow_tags_without_projection_name(): void
     {
         $this->registerProjectionManager('foo');
@@ -98,7 +99,7 @@ class RegisterProjectionsPassTest extends CompilerPassTestCase
         $this->compile();
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_allow_tags_without_projection_manager(): void
     {
         $this->registerProjectionManager('foo');
@@ -116,7 +117,7 @@ class RegisterProjectionsPassTest extends CompilerPassTestCase
         $this->compile();
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_allow_tags_with_a_missing_projection_manager(): void
     {
         $this->registerProjectionManager('foo');
@@ -136,7 +137,7 @@ class RegisterProjectionsPassTest extends CompilerPassTestCase
         $this->compile();
     }
 
-    /** @test */
+    #[Test]
     public function it_registers_tagged_projections()
     {
         $this->registerProjectionManager('bar');
@@ -160,7 +161,7 @@ class RegisterProjectionsPassTest extends CompilerPassTestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_registers_tagged_read_model_projections()
     {
         $this->registerProjectionManager('bar');

@@ -2,8 +2,8 @@
 
 /**
  * This file is part of prooph/event-store-symfony-bundle.
- * (c) 2014-2024 Alexander Miertsch <kontakt@codeliner.ws>
- * (c) 2015-2024 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2014-2026 Alexander Miertsch <kontakt@codeliner.ws>
+ * (c) 2015-2026 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace ProophTest\Bundle\EventStore;
 
 use PDO;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prooph\Bundle\EventStore\Exception\RuntimeException;
 use Prooph\Bundle\EventStore\Factory\ProjectionManagerFactory;
@@ -39,12 +41,10 @@ class ProjectionManagerFactoryTest extends TestCase
         $this->sut = new ProjectionManagerFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_not_accept_an_unknown_event_store(): void
     {
-        $unknownEventStore = $this->getMockForAbstractClass(EventStore::class);
+        $unknownEventStore = $this->createMock(EventStore::class);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(\sprintf(
@@ -55,23 +55,26 @@ class ProjectionManagerFactoryTest extends TestCase
         $this->sut->createProjectionManager($unknownEventStore);
     }
 
-    /**
-     * @test
-     * @dataProvider provideEventStores
-     */
+    #[Test]
+    #[DataProvider('provideEventStores')]
     public function it_should_create_a_projection_manager(
         string $expectedProjectionManagerType,
-        EventStore $eventStore
+        string $eventStoreType,
+        int $decoratorLevels
     ): void {
+        $eventStore = $this->createAnEventStore($eventStoreType);
+
+        for ($level = 0; $level < $decoratorLevels; $level++) {
+            $eventStore = $this->createAnEventStoreDecorator($eventStore);
+        }
+
         $connection = $this->createAPdoObject();
         $projectionManager = $this->sut->createProjectionManager($eventStore, $connection);
 
         self::assertInstanceOf($expectedProjectionManagerType, $projectionManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_cannot_create_a_pdo_manager_without_pdo_connection(): void
     {
         $this->expectException(RuntimeException::class);
@@ -81,39 +84,41 @@ class ProjectionManagerFactoryTest extends TestCase
         $this->sut->createProjectionManager($eventStore);
     }
 
-    public function provideEventStores(): array
+    public static function provideEventStores(): array
     {
-        $postgresEventStore = $this->createAnEventStore(PostgresEventStore::class);
-        $singleLevelEventStoreDecorator = $this->createAnEventStoreDecorator($postgresEventStore);
-        $multiLevelEventStoreDecorator = $this->createAnEventStoreDecorator($singleLevelEventStoreDecorator);
-
         $eventStores = [
             'InMemoryEventStore' => [
                 InMemoryProjectionManager::class,
-                $this->createAnEventStore(InMemoryEventStore::class),
+                InMemoryEventStore::class,
+                0,
             ],
             'PostgresEventStore' => [
                 PostgresProjectionManager::class,
-                $postgresEventStore,
+                PostgresEventStore::class,
+                0,
             ],
             'MySqlEventStore' => [
                 MySqlProjectionManager::class,
-                $this->createAnEventStore(MySqlEventStore::class),
+                MySqlEventStore::class,
+                0,
             ],
             'Single level EventStoreDecorator' => [
                 PostgresProjectionManager::class,
-                $singleLevelEventStoreDecorator,
+                PostgresEventStore::class,
+                1,
             ],
-            'Multi level InMemoryEventStore' => [
+            'Multi level EventStoreDecorator' => [
                 PostgresProjectionManager::class,
-                $multiLevelEventStoreDecorator,
+                PostgresEventStore::class,
+                2,
             ],
         ];
 
         if (\class_exists(MariaDbEventStore::class)) {
             $eventStores['MariaDbEventStore'] = [
                 MariaDbProjectionManager::class,
-                $this->createAnEventStore(MariaDbEventStore::class),
+                MariaDbEventStore::class,
+                0,
             ];
         }
 
@@ -135,7 +140,7 @@ class ProjectionManagerFactoryTest extends TestCase
 
     private function createAMessageFactory(): MessageFactory
     {
-        return $this->getMockForAbstractClass(MessageFactory::class);
+        return $this->createMock(MessageFactory::class);
     }
 
     private function createAPdoObject(): PDO
@@ -145,12 +150,12 @@ class ProjectionManagerFactoryTest extends TestCase
 
     private function createAPersistenceStrategy(): PersistenceStrategy
     {
-        return $this->getMockForAbstractClass(PersistenceStrategy::class);
+        return $this->createMock(PersistenceStrategy::class);
     }
 
     private function createAnEventStoreDecorator(EventStore $decoratedEventStore): EventStoreDecorator
     {
-        $eventStoreDecorator = $this->getMockForAbstractClass(EventStoreDecorator::class);
+        $eventStoreDecorator = $this->createMock(EventStoreDecorator::class);
         $eventStoreDecorator
             ->method('getInnerEventStore')
             ->willReturn($decoratedEventStore);

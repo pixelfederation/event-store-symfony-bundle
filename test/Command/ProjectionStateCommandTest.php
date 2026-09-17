@@ -2,8 +2,8 @@
 
 /**
  * This file is part of prooph/event-store-symfony-bundle.
- * (c) 2014-2024 Alexander Miertsch <kontakt@codeliner.ws>
- * (c) 2015-2024 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2014-2026 Alexander Miertsch <kontakt@codeliner.ws>
+ * (c) 2015-2026 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\Command;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use ProophTest\Bundle\EventStore\Command\Fixture\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @covers \Prooph\Bundle\EventStore\Command\ProjectionStateCommand
- * @covers \Prooph\Bundle\EventStore\Command\AbstractProjectionCommand
- */
+#[CoversClass(\Prooph\Bundle\EventStore\Command\ProjectionStateCommand::class)]
+#[CoversClass(\Prooph\Bundle\EventStore\Command\AbstractProjectionCommand::class)]
 class ProjectionStateCommandTest extends KernelTestCase
 {
     protected static function getKernelClass(): string
@@ -29,10 +30,8 @@ class ProjectionStateCommandTest extends KernelTestCase
         return TestKernel::class;
     }
 
-    /**
-     * @test
-     * @dataProvider provideProjectionNames
-     */
+    #[Test]
+    #[DataProvider('provideProjectionNames')]
     public function it_echoes_the_state_of_a_projection(string $projectionName): void
     {
         $kernel = static::createKernel();

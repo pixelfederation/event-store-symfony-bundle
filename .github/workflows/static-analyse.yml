@@ -10,7 +10,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - "8.3"
+                    - "8.4"
                 operating-system:
                     - "ubuntu-latest"
         runs-on: ${{ matrix.operating-system }}
@@ -26,6 +26,7 @@ jobs:
                 with:
                     tools: composer:v2
                     php-version: "${{ matrix.php-version }}"
+                    extensions: "pdo, pdo_mysql, pdo_pgsql"
                     ini-values: memory_limit=-1
 
             -   name: "Get Composer Cache Directory"

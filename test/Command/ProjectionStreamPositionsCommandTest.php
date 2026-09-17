@@ -2,8 +2,8 @@
 
 /**
  * This file is part of prooph/event-store-symfony-bundle.
- * (c) 2014-2024 Alexander Miertsch <kontakt@codeliner.ws>
- * (c) 2015-2024 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2014-2026 Alexander Miertsch <kontakt@codeliner.ws>
+ * (c) 2015-2026 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace ProophTest\Bundle\EventStore\Command;
 
 use ArrayIterator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\Bundle\EventStore\Projection\Projection;
 use Prooph\Bundle\EventStore\Projection\ReadModelProjection;
 use Prooph\EventStore\InMemoryEventStore;
@@ -27,10 +29,8 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @covers \Prooph\Bundle\EventStore\Command\ProjectionStreamPositionsCommand
- * @covers \Prooph\Bundle\EventStore\Command\AbstractProjectionCommand
- */
+#[CoversClass(\Prooph\Bundle\EventStore\Command\ProjectionStreamPositionsCommand::class)]
+#[CoversClass(\Prooph\Bundle\EventStore\Command\AbstractProjectionCommand::class)]
 class ProjectionStreamPositionsCommandTest extends KernelTestCase
 {
     protected static function getKernelClass(): string
@@ -38,7 +38,7 @@ class ProjectionStreamPositionsCommandTest extends KernelTestCase
         return TestKernel::class;
     }
 
-    /** @test */
+    #[Test]
     public function it_echoes_the_position_of_a_projection(): void
     {
         $kernel = static::createKernel();
@@ -63,7 +63,7 @@ class ProjectionStreamPositionsCommandTest extends KernelTestCase
         self::assertStringContainsString(' 1 ', $commandTester->getDisplay());
     }
 
-    /** @test */
+    #[Test]
     public function it_echoes_the_position_of_a_read_model_projection(): void
     {
         $kernel = static::createKernel();

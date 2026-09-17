@@ -2,8 +2,8 @@
 
 /**
  * This file is part of prooph/event-store-symfony-bundle.
- * (c) 2014-2024 Alexander Miertsch <kontakt@codeliner.ws>
- * (c) 2015-2024 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2014-2026 Alexander Miertsch <kontakt@codeliner.ws>
+ * (c) 2015-2026 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ProophTest\Bundle\EventStore\DependencyInjection;
 
 use ArrayIterator;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prooph\Bundle\EventStore\DependencyInjection\ProophEventStoreExtension;
 use Prooph\Bundle\EventStore\ProophEventStoreBundle;
@@ -26,10 +27,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
-use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\Dumper;
-use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -38,13 +37,13 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
 {
     abstract protected function loadFromFile(ContainerBuilder $container, $file);
 
-    /** @test */
+    #[Test]
     public function it_does_not_process_compiler_passes_without_configured_store(): void
     {
         self::assertInstanceOf(ContainerBuilder::class, $this->loadContainer('unconfigured'));
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_an_event_store(): void
     {
         $container = $this->loadContainer('event_store');
@@ -61,7 +60,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         self::assertInstanceOf(ProjectionManager::class, $projectionManager);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_multiple_event_stores(): void
     {
         $container = $this->loadContainer('event_store_multiple');
@@ -77,13 +76,13 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_dumps_multiple_event_stores(): void
     {
         $this->dump('event_store_multiple');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_attach_metadata_enrichers_to_every_event_store(): void
     {
         $message = $this->createMock(Message::class);
@@ -100,7 +99,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         $store->appendTo(new StreamName('any'), new ArrayIterator([$message]));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_attach_metadata_enrichers_to_a_specific_event_store(): void
     {
         $enrichedMessage = $this->createMock(Message::class);
@@ -123,7 +122,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         $withoutEnricherStore->appendTo(new StreamName('any'), new ArrayIterator([$notEnrichedMessage]));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_attach_plugins_to_every_event_store(): void
     {
         $container = $this->loadContainer('plugins_global');
@@ -135,7 +134,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         self::assertContains($eventStore, $plugin->stores);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_attach_plugins_to_a_specific_event_store(): void
     {
         $container = $this->loadContainer('plugins');
@@ -149,7 +148,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         $this->assertNotContains($withoutPluginStore, $plugin->stores);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_register_projections_centrally(): void
     {
         $container = $this->loadContainer('projections');
@@ -176,7 +175,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_can_register_projections_using_tags(): void
     {
         $container = $this->loadContainer('projections');
@@ -193,30 +192,26 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_dumps_an_event_stores_with_plugins()
     {
         $this->dump('plugins');
     }
 
-    /** @test */
+    #[Test]
     public function it_dumps_an_event_stores_with_metadata_enrichers()
     {
         $this->dump('metadata_enricher');
     }
 
-    /**
-     * @test
-     *
-     *
-     */
+    #[Test]
     public function it_expects_projection_nodes_to_have_a_projection_key(): void
     {
         $this->expectException(InvalidConfigurationException::class);
         $this->loadContainer('missing_projection_key');
     }
 
-    private function loadContainer($fixture, CompilerPassInterface $compilerPass = null)
+    private function loadContainer($fixture, ?CompilerPassInterface $compilerPass = null)
     {
         $container = $this->getContainer();
 
@@ -261,11 +256,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
     {
         $bundle = new ProophEventStoreBundle();
         $bundle->build($container);
-        $container->getCompilerPassConfig()->setOptimizationPasses([
-            \class_exists(ResolveChildDefinitionsPass::class)
-                ? new ResolveChildDefinitionsPass()
-                : new ResolveDefinitionTemplatesPass(),
-        ]);
+        $container->getCompilerPassConfig()->setOptimizationPasses([new ResolveChildDefinitionsPass()]);
         $container->getCompilerPassConfig()->setRemovingPasses([]);
 
         $container->compile();
@@ -276,9 +267,7 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
         $container = $this->loadContainer($configFile);
         $dumper = null;
 
-        if ($this instanceof XmlEventStoreExtensionTest) {
-            $dumper = new XmlDumper($container);
-        } elseif ($this instanceof YamlEventStoreExtensionTest) {
+        if ($this instanceof YamlEventStoreExtensionTest) {
             $dumper = new YamlDumper($container);
         }
         self::assertInstanceOf(Dumper::class, $dumper, \sprintf('Test type "%s" not supported', \get_class($this)));
