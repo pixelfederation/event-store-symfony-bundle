@@ -29,6 +29,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\Dumper;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -269,6 +270,10 @@ abstract class AbstractEventStoreExtensionTestCase extends TestCase
 
         if ($this instanceof YamlEventStoreExtensionTest) {
             $dumper = new YamlDumper($container);
+        }
+
+        if ($this instanceof PhpEventStoreExtensionTest) {
+            $dumper = new PhpDumper($container);
         }
         self::assertInstanceOf(Dumper::class, $dumper, \sprintf('Test type "%s" not supported', \get_class($this)));
         self::assertNotEmpty($dumper->dump());

@@ -20,9 +20,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - **[BC-BREAK]** Support for every Symfony version other than 7.4 (LTS) and 8.1. Symfony 5.4
   was the only one still needing `HandlerFailedException::getNestedExceptions()`.
-- `ProophEventStoreExtension::getNamespace()`. Symfony 8 removed
-  `ExtensionInterface::getNamespace()` along with the XML configuration format, so bundle
-  configuration can no longer be written in XML on Symfony 8.
+- **[BC-BREAK]** Configuring this bundle in XML is no longer supported. Symfony 8 removed
+  `ExtensionInterface::getNamespace()` along with the XML configuration format, so
+  `ProophEventStoreExtension::getNamespace()` is gone as well. Move your
+  `prooph_event_store` configuration to YAML or the PHP config format; both are covered by
+  the test suite.
 
 ## [0.5.0] - 2018-05-03
 
