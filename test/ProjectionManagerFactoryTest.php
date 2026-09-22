@@ -44,7 +44,7 @@ class ProjectionManagerFactoryTest extends TestCase
     #[Test]
     public function it_should_not_accept_an_unknown_event_store(): void
     {
-        $unknownEventStore = $this->createMock(EventStore::class);
+        $unknownEventStore = $this->createStub(EventStore::class);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(\sprintf(
@@ -140,22 +140,22 @@ class ProjectionManagerFactoryTest extends TestCase
 
     private function createAMessageFactory(): MessageFactory
     {
-        return $this->createMock(MessageFactory::class);
+        return $this->createStub(MessageFactory::class);
     }
 
     private function createAPdoObject(): PDO
     {
-        return $this->createMock(PDO::class);
+        return $this->createStub(PDO::class);
     }
 
     private function createAPersistenceStrategy(): PersistenceStrategy
     {
-        return $this->createMock(PersistenceStrategy::class);
+        return $this->createStub(PersistenceStrategy::class);
     }
 
     private function createAnEventStoreDecorator(EventStore $decoratedEventStore): EventStoreDecorator
     {
-        $eventStoreDecorator = $this->createMock(EventStoreDecorator::class);
+        $eventStoreDecorator = $this->createStub(EventStoreDecorator::class);
         $eventStoreDecorator
             ->method('getInnerEventStore')
             ->willReturn($decoratedEventStore);
