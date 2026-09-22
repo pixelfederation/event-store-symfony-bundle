@@ -1,9 +1,7 @@
 <?php
 
 /**
- * This file is part of prooph/event-store-symfony-bundle.
- * (c) 2014-2026 Alexander Miertsch <kontakt@codeliner.ws>
- * (c) 2015-2026 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * This file is part of pixelfederation/event-store-symfony-bundle.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.

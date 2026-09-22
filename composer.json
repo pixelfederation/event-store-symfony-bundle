@@ -3,30 +3,40 @@
   "description": "Fork of prooph/event-store-symfony-bundle with Symfony 8 support",
   "license": "BSD-3-Clause",
   "replace": {
-    "prooph/event-store-symfony-bundle": "*"
+    "prooph/event-store-symfony-bundle": "^0.5"
   },
   "type": "symfony-bundle",
-  "homepage": "http://getprooph.org/",
+  "homepage": "https://github.com/pixelfederation/event-store-symfony-bundle",
   "authors": [
     {
+      "name": "PixelFederation",
+      "homepage": "https://github.com/pixelfederation",
+      "role": "Maintainer"
+    },
+    {
       "name": "Alexander Miertsch",
-      "email": "kontakt@codeliner.ws"
+      "email": "kontakt@codeliner.ws",
+      "role": "Original author"
     },
     {
       "name": "Sascha-Oliver Prolic",
-      "email": "saschaprolic@googlemail.com"
+      "email": "saschaprolic@googlemail.com",
+      "role": "Original author"
     },
     {
       "name": "Malte Blättermann",
-      "email": "malte.blaettermann@googlemail.com"
+      "email": "malte.blaettermann@googlemail.com",
+      "role": "Original author"
     },
     {
       "name": "Ralf Junghanns",
-      "email": "ralf.junghanns@gmail.com"
+      "email": "ralf.junghanns@gmail.com",
+      "role": "Original author"
     },
     {
       "name": "Oskar Pfeifer-Bley",
-      "email": "oskar@programming-php.net"
+      "email": "oskar@programming-php.net",
+      "role": "Original author"
     }
   ],
   "keywords": [
