@@ -30,8 +30,7 @@ class ProjectionStateCommand extends AbstractProjectionCommand
     {
         $output->writeln('<action>Current state:</action>');
 
-        /** @var string $state */
-        $state = \json_encode($this->projectionManager->fetchProjectionState($this->projectionName));
+        $state = \json_encode($this->projectionManager->fetchProjectionState($this->projectionName), \JSON_THROW_ON_ERROR);
         $output->writeln($state);
 
         return 0;

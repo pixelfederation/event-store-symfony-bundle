@@ -63,8 +63,13 @@ final class ProjectionOptionsPass implements CompilerPassInterface
      */
     private static function assertDefinitionIsAValidClass(string $serviceId, Definition $definition): void
     {
-        /** @var object $definitionClass */
+        /** @var class-string|null $definitionClass */
         $definitionClass = $definition->getClass();
+
+        if (null === $definitionClass) {
+            throw new RuntimeException(\sprintf('Tagged service "%s" has no class', $serviceId));
+        }
+
         $reflection = new \ReflectionClass($definitionClass);
 
         if (! $reflection->implementsInterface(ProjectionOptions::class)) {
