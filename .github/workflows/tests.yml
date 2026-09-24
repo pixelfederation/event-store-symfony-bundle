@@ -37,7 +37,7 @@ jobs:
             -   name: "Get Composer Cache Directory"
                 id: composer-cache
                 run: |
-                    echo "::set-output name=dir::$(composer config cache-files-dir)"
+                    echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
             -   name: "Cache Composer dependencies"
                 uses: "actions/cache@v4"
                 with:
@@ -47,8 +47,8 @@ jobs:
                     restore-keys: |
                         php-${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-
 
-            -   name: "Require php-coveralls/php-coveralls and symfony/flex"
-                run: "composer global require php-coveralls/php-coveralls symfony/flex --no-scripts --no-plugins"
+            -   name: "Require symfony/flex"
+                run: "composer global require symfony/flex --no-scripts --no-plugins"
 
             -   name: "Enable symfony/flex plugin"
                 run: "composer global config --no-scripts --no-plugins allow-plugins.symfony/flex true"
@@ -60,6 +60,20 @@ jobs:
                 run: "composer test-coverage"
 
             -   name: "Upload coverage results to Coveralls"
-                env:
-                    COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                run: "php-coveralls -v"
+                uses: "coverallsapp/github-action@v2"
+                with:
+                    file: "build/logs/clover.xml"
+                    format: "clover"
+                    parallel: true
+                    flag-name: "php-${{ matrix.php-version }}-symfony-${{ matrix.symfony-version }}"
+
+    coveralls-finish:
+        name: Coveralls finish
+        needs: tests
+        if: ${{ always() }}
+        runs-on: ubuntu-latest
+        steps:
+            -   name: "Close parallel Coveralls build"
+                uses: "coverallsapp/github-action@v2"
+                with:
+                    parallel-finished: true
