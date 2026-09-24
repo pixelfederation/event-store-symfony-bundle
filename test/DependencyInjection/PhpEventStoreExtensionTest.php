@@ -15,13 +15,13 @@ namespace ProophTest\Bundle\EventStore\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-class XmlEventStoreExtensionTest extends AbstractEventStoreExtensionTestCase
+class PhpEventStoreExtensionTest extends AbstractEventStoreExtensionTestCase
 {
     protected function loadFromFile(ContainerBuilder $container, $file)
     {
-        $loadXml = new XmlFileLoader($container, new FileLocator(__DIR__.'/Fixture/config/xml'));
-        $loadXml->load($file.'.xml');
+        $loadPhp = new PhpFileLoader($container, new FileLocator(__DIR__ . '/Fixture/config/php'));
+        $loadPhp->load($file . '.php');
     }
 }

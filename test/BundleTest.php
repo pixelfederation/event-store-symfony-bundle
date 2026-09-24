@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prooph\Bundle\EventStore\DependencyInjection\Compiler\MetadataEnricherPass;
 use Prooph\Bundle\EventStore\DependencyInjection\Compiler\PluginsPass;
@@ -21,9 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class BundleTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_compiler_pass()
     {
         $container = new ContainerBuilder();

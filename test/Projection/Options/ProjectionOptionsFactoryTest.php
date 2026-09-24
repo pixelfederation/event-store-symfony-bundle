@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\Projection\Options;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prooph\Bundle\EventStore\Projection\Options\ProjectionOptions;
 use Prooph\Bundle\EventStore\Projection\Options\ProjectionOptionsFactory;
@@ -20,9 +21,7 @@ use Prooph\EventStore\Pdo\Projection\GapDetection;
 
 class ProjectionOptionsFactoryTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_creates_projection_options_instance(): void
     {
         $config = [

@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\Command;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\EventStore\Exception\RuntimeException;
 use ProophTest\Bundle\EventStore\Command\Fixture\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @covers \Prooph\Bundle\EventStore\Command\ProjectionStopCommand
- * @covers \Prooph\Bundle\EventStore\Command\AbstractProjectionCommand
- */
+#[CoversClass(\Prooph\Bundle\EventStore\Command\ProjectionStopCommand::class)]
+#[CoversClass(\Prooph\Bundle\EventStore\Command\AbstractProjectionCommand::class)]
 class ProjectionStopCommandTest extends KernelTestCase
 {
     protected static function getKernelClass(): string
@@ -30,10 +31,8 @@ class ProjectionStopCommandTest extends KernelTestCase
         return TestKernel::class;
     }
 
-    /**
-     * @test
-     * @dataProvider provideProjectionNames
-     */
+    #[Test]
+    #[DataProvider('provideProjectionNames')]
     public function it_stops_a_projection(string $projectionName): void
     {
         $kernel = static::createKernel();

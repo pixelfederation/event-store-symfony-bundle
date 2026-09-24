@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## [Unreleased]
+
+### Added
+
+- Support for Symfony 8.1
+
+### Changed
+
+- **[BC-BREAK]** The bundle's own service definitions moved from XML to the PHP config
+  format. Symfony 8 removed the XML configuration format entirely.
+- **[BC-BREAK]** Minimum PHP version is now 8.4.
+- Renamed to `pixelfederation/event-store-symfony-bundle`; `replace`s the upstream
+  `prooph/event-store-symfony-bundle`, so it works as a drop-in replacement.
+
+### Removed
+
+- **[BC-BREAK]** Support for every Symfony version other than 7.4 (LTS) and 8.1. Symfony 5.4
+  was the only one still needing `HandlerFailedException::getNestedExceptions()`.
+- **[BC-BREAK]** Configuring this bundle in XML is no longer supported. Symfony 8 removed
+  `ExtensionInterface::getNamespace()` along with the XML configuration format, so
+  `ProophEventStoreExtension::getNamespace()` is gone as well. Move your
+  `prooph_event_store` configuration to YAML or the PHP config format; both are covered by
+  the test suite.
+
 ## [0.5.0] - 2018-05-03
 
 ### Added

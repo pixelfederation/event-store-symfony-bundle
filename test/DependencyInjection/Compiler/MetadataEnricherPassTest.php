@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\Bundle\EventStore\DependencyInjection\Compiler\MetadataEnricherPass;
 use ProophTest\Bundle\EventStore\DependencyInjection\Fixture\Metadata\StaticMetadataEnricher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,7 +27,7 @@ class MetadataEnricherPassTest extends CompilerPassTestCase
         $container->addCompilerPass(new MetadataEnricherPass());
     }
 
-    /** @test */
+    #[Test]
     public function it_registers_enrichers()
     {
         $this->registerEventStore('foo');

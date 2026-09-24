@@ -44,7 +44,7 @@ class TestKernel extends Kernel
         parent::build($container);
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/../../Resources/config/services.yml');
         $loader->load(__DIR__ . '/config/projections.yml');

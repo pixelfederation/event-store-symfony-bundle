@@ -19,21 +19,16 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class ProophEventStoreExtension extends Extension
 {
     public const TAG_PROJECTION = 'prooph_event_store.projection';
 
     public const TAG_PROJECTION_OPTIONS = 'prooph_event_store.projection_options';
-
-    public function getNamespace(): string
-    {
-        return 'http://getprooph.org/schemas/symfony-dic/prooph';
-    }
 
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
     {
@@ -44,8 +39,8 @@ final class ProophEventStoreExtension extends Extension
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('event_store.xml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('event_store.php');
 
         if (! empty($config['stores'])) {
             $this->loadEventStores($config, $container);

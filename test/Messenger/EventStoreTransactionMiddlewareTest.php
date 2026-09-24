@@ -61,10 +61,6 @@ class EventStoreTransactionMiddlewareTest extends MiddlewareTestCase
 
     public function testItResetsHandledStampsOnHandlerFailedException(): void
     {
-        if (! \class_exists(HandlerFailedException::class)) {
-            self::markTestSkipped('Symfony Messenger 4.2 does not support HandlerFailedException');
-        }
-
         $this->eventStore->expects(self::once())
             ->method('beginTransaction');
         $this->eventStore->expects(self::once())

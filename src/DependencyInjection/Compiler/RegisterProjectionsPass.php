@@ -41,8 +41,13 @@ final class RegisterProjectionsPass implements CompilerPassInterface
 
         foreach ($projectionIds as $id) {
             $projectorDefinition = $container->getDefinition($id);
-            /** @var object $projectorDefinitionClass */
+            /** @var class-string|null $projectorDefinitionClass */
             $projectorDefinitionClass = $projectorDefinition->getClass();
+
+            if (null === $projectorDefinitionClass) {
+                throw new RuntimeException(\sprintf('Tagged service "%s" has no class', $id));
+            }
+
             $projectionClass = new ReflectionClass($projectorDefinitionClass);
 
             self::assertProjectionHasAValidClass($id, $projectionClass);

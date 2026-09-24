@@ -54,17 +54,17 @@ class BlackHole implements EventStore
     public function load(
         StreamName $streamName,
         int $fromNumber = 1,
-        int $count = null,
-        MetadataMatcher $metadataMatcher = null
+        ?int $count = null,
+        ?MetadataMatcher $metadataMatcher = null
     ): Iterator {
         // TODO: Implement load() method.
     }
 
     public function loadReverse(
         StreamName $streamName,
-        int $fromNumber = null,
-        int $count = null,
-        MetadataMatcher $metadataMatcher = null
+        ?int $fromNumber = null,
+        ?int $count = null,
+        ?MetadataMatcher $metadataMatcher = null
     ): Iterator {
         // TODO: Implement loadReverse() method.
     }

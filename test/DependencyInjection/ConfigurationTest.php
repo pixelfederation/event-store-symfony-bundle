@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace ProophTest\Bundle\EventStore\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\Bundle\EventStore\DependencyInjection\Configuration;
 use Prooph\Bundle\EventStore\DependencyInjection\ProophEventStoreExtension;
 use Prooph\Common\Event\ProophActionEventEmitter;
@@ -36,10 +38,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         return new Configuration();
     }
 
-    /**
-     * @test
-     * @dataProvider provideConfigsToTestServicesWithAt
-     */
+    #[Test]
+    #[DataProvider('provideConfigsToTestServicesWithAt')]
     public function it_allows_to_prefix_services_with_an_at(string $configFile): void
     {
         $expectedConfiguration = [
@@ -72,7 +72,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
     public static function provideConfigsToTestServicesWithAt(): array
     {
         return [
-            'xml' => [__DIR__ . '/Fixture/config/xml/event_store_with_@.xml'],
             'yml' => [__DIR__ . '/Fixture/config/yml/event_store_with_@.yml'],
         ];
     }

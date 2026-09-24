@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\Command;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\EventStore\Projection\InMemoryProjectionManager;
 use ProophTest\Bundle\EventStore\Command\Fixture\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @covers \Prooph\Bundle\EventStore\Command\ProjectionNamesCommand
- * @covers \Prooph\Bundle\EventStore\Command\AbstractProjectionCommand
- */
+#[CoversClass(\Prooph\Bundle\EventStore\Command\ProjectionNamesCommand::class)]
+#[CoversClass(\Prooph\Bundle\EventStore\Command\AbstractProjectionCommand::class)]
 class ProjectionNamesCommandTest extends KernelTestCase
 {
     protected static function getKernelClass(): string
@@ -30,10 +31,8 @@ class ProjectionNamesCommandTest extends KernelTestCase
         return TestKernel::class;
     }
 
-    /**
-     * @test
-     * @dataProvider provideProjectionNames
-     */
+    #[Test]
+    #[DataProvider('provideProjectionNames')]
     public function it_lists_all_projections(string $projectionName): void
     {
         $kernel = static::createKernel();
@@ -58,11 +57,9 @@ class ProjectionNamesCommandTest extends KernelTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider provideLimitOptions
-     */
-    public function it_lists_correct_amount_of_projections(int $amountToGenerate, int $limit = null): void
+    #[Test]
+    #[DataProvider('provideLimitOptions')]
+    public function it_lists_correct_amount_of_projections(int $amountToGenerate, ?int $limit = null): void
     {
         $kernel = static::createKernel();
         $kernel->boot();
@@ -131,7 +128,7 @@ class ProjectionNamesCommandTest extends KernelTestCase
         );
     }
 
-    public function provideLimitOptions(): array
+    public static function provideLimitOptions(): array
     {
         return [
             [

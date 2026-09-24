@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ProophTest\Bundle\EventStore\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Prooph\Bundle\EventStore\DependencyInjection\Compiler\DeprecateFqcnProjectionsPass;
 use ProophTest\Bundle\EventStore\DependencyInjection\Fixture\Projection\BlackHoleProjection;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
@@ -21,9 +23,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-/**
- * @covers \Prooph\Bundle\EventStore\DependencyInjection\Compiler\DeprecateFqcnProjectionsPass
- */
+#[CoversClass(\Prooph\Bundle\EventStore\DependencyInjection\Compiler\DeprecateFqcnProjectionsPass::class)]
 class DeprecateFqcnProjectionsPassTest extends CompilerPassTestCase
 {
     protected function registerCompilerPass(ContainerBuilder $container): void
@@ -31,7 +31,7 @@ class DeprecateFqcnProjectionsPassTest extends CompilerPassTestCase
         $container->addCompilerPass(new DeprecateFqcnProjectionsPass());
     }
 
-    /** @test */
+    #[Test]
     public function it_does_not_warn_about_existing_projections(): void
     {
         $this->registerProjectionsServiceLocator(['foo' => BlackHoleProjection::class]);
@@ -41,7 +41,7 @@ class DeprecateFqcnProjectionsPassTest extends CompilerPassTestCase
         $this->addToAssertionCount(1); // no error has been triggered
     }
 
-    /** @test */
+    #[Test]
     public function it_does_nothing_if_a_projection_does_not_exist_but_is_no_class(): void
     {
         $this->registerProjectionsServiceLocator(['foo' => 'service.id.that.is.no.class']);
@@ -50,7 +50,7 @@ class DeprecateFqcnProjectionsPassTest extends CompilerPassTestCase
         $this->addToAssertionCount(1); // no error has been triggered
     }
 
-    /** @test */
+    #[Test]
     public function it_registers_projections_that_are_missing_and_provided_as_valid_class(): void
     {
         $this->registerProjectionsServiceLocator(['foo' => BlackHoleProjection::class]);
